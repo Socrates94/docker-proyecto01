@@ -1,0 +1,29 @@
+version: '3'
+services:
+  # Entorno de Desarrollo (Live reload funciona aquí en el puerto 3000)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app
+  
+  # Entorno de Producción con Nginx (Sin live reload, en el puerto 8080)
+  nginx-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: [ "npm", "run", "test" ]
